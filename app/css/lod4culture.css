@@ -1,0 +1,83 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+html, body, #mimapa {
+	height: 100%;
+	width: 100%;
+}
+
+#mimapa {
+	position:fixed;
+	bottom: 0px;
+}
+
+
+.mitarjeta {
+   width: 97vw;
+   max-width: 25rem;
+}
+
+/* esto es para que los botones de navegación
+estén por debajo del card de .mitarjeta*/
+.leaflet-bottom {
+	z-index: 600;
+}
+
+
+#buscador_heading {
+	position:absolute;
+	z-index: 999;
+	top: 0px;
+ 	right: 0px;
+}
+
+.questalert {
+	position:absolute;
+	z-index: 999; 
+	bottom:0px;
+}
+
+.marcadorImagen {
+  width: 48px;
+  height: 48px;
+  background-color: #3F51B5; /* indigo 500 */
+  border: 2px solid #1A237E; /* indigo 900 */
+  border-radius: 50%;
+  text-align: center;
+  line-height: 44px;
+  font-size: medium;
+  color: #ECEFF1; /* blue grey 50 */
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.marcadorImagenPRO {
+  width: 56px;
+  height: 56px;
+  background-color: #FDD835; /* yellow 600 */
+  border: 6px solid #F57F17; /* yellow 900 */
+  border-radius: 50%;
+  text-align: center;
+  line-height: 44px;
+  font-size: medium;
+  color: #ECEFF1; /* blue grey 50 */
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.marcadorTexto {
+  width: 48px;
+  height: 48px;
+  background-color: #F4511E; /* deep orange 600 */
+  border: 2px solid #BF360C; /* deep orange 900 */
+  text-align: center;
+  line-height: 44px;  
+  font-size: medium;
+  color: #ECEFF1; /* blue grey 50 */
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  display: block;
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <meta name="description" content="LOD4Culture is an application for exploring world-wide Cultural Heritage based on Linked Open Data (Wikidata and DBpedia)">
+    <meta name="author" content="Guillermo Vega-Gorgojo">
+    
+    <meta property="og:title" content="Home - LOD4Culture">
+    <meta property="og:url" content="https://lod4culture.gsic.uva.es/">
+    <meta property="og:description" content="World-wide exploration of Cultural Heritage with LOD4Culture">
+    <meta property="og:image" content="https://lod4culture.gsic.uva.es/app/images/snapshot1.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lod4culture">
+    
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+	<link rel="shortcut icon" href="./favicon.ico">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="./favicon.ico">
+	<link rel="icon" type="image/png" sizes="192x192" href="./app/images/android-chrome-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="./app/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./app/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="./app/images/apple-touch-icon.png">
+
+    <title>Home - LOD4Culture</title>
+
+   	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z9CCQ9FY2"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-9Z9CCQ9FY2');
+	</script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" 
+    	integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <!-- Iconos Font Awesome CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="app/css/landlod4culture.css" rel="stylesheet">
+    
+    <!-- Javascript files -->
+	<script type="text/javascript" language="Javascript" src="app/libs/jquery-3.6.0.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+	<script type="text/javascript" language="Javascript" src="app/js/util.js"></script>	
+	
+	<!-- Check language -->   
+	<script>
+		if (prefersSpanish()) // prefiere español
+			window.location.href = 'es/index.html' + window.location.hash;
+	</script>
+  </head>
+
+  <body>
+	<div class="position-relative overflow-hidden p-3 p-md-3 m-md-3 text-center cabecera">
+	  <span class="float-right mt-n1">
+		<a class="btn btn-lg px-2" href="https://twitter.com/intent/tweet?text=World-wide%20exploration%20of%20Cultural%20Heritage%20with%20LOD4Culture&via=lod4culture&url=https%3A%2F%2Flod4culture.gsic.uva.es%2F" 
+			target="_blank" role="button"><i class="fa fa-twitter" style="color:#283593;"></i></a>
+		<a class="btn btn-lg px-2 ml-2 fb-xfbml-parse-ignore" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flod4culture.gsic.uva.es%2F"
+			target="_blank" role="button"><i class="fa fa-facebook" style="color:#283593;"></i></a>
+		<a id="guasaps" class="btn btn-lg px-2 ml-2" href="whatsapp://send?text=World-wide%20exploration%20of%20Cultural%20Heritage%20with%20LOD4Culture%20https%3A%2F%2Flod4culture.gsic.uva.es%2F" 
+			target="_blank" data-action="share/whatsapp/share role="button"><i class="fa fa-whatsapp" style="color:#283593;"></i></a>
+	  </span>
+	  <br>
+	  <div class="p-lg-2 mx-auto my-4">
+		<img src="app/images/lod4culture.svg" focusable="false" role="img" >
+		<p class="lead font-weight-normal mt-2">World-wide Cultural Heritage in one click.</p>
+		<a class="btn btn-primary btn-lg" href="app/index.html">Try it!</a>
+	  </div>
+	</div>
+	<!-- Wrap the rest of the page in another container to center all the content. --> 
+	 <div class="container marketing">
+		 <!-- START THE FEATURETTES -->
+		<div class="row featurette">
+		  <div class="col-md-7">
+			<h2 class="featurette-heading">Navigate the map. <span class="text-muted">Discover culture gems.</span></h2>
+			<p class="lead">With a simple browser you have access to massive culture heritage data at your fingertips. 
+			Navigate the map, go to remote or nearby locations and find unique sites. 
+			LOD4Culture is consciously optimized to work even on mobile devices.
+			Recommended browsers: Firefox and Chrome.</p>
+		  </div>
+		  <div class="col-md-5">
+		  	<a title="Manhattan and Museum of Modern Art (MOMA)" href="app/index.html?loc=40.764096,-73.988070,14z">
+			  <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="app/images/snapshot1.png" focusable="false" role="img" >
+			</a>
+		  </div>
+		</div>
+		<hr class="featurette-divider">
+		<div class="row featurette">
+		  <div class="col-md-7 order-md-2">
+			<h2 class="featurette-heading">Zoom in or zoom out. <span class="text-muted">Try it yourself.</span></h2>
+			<p class="lead">Explore the map at different zoom levels to get an overview of a wide area or to discover the cultural 
+			treasures in a neighbourhood. Filter sites by type, e.g. Art museums, Castles, Dolmens..., to match your particular interests.</p>
+		  </div>
+		  <div class="col-md-5 order-md-1">
+		  	<a title="Way of Saint James and Cathedral of Santiago de Compostela" href="app/index.html?loc=42.879958,-8.544381,15z&siteType=http://www.wikidata.org/entity/Q24398318">
+			  <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="app/images/snapshot2.png" focusable="false" role="img" >
+			</a>
+		  </div>
+		</div>
+		<hr class="featurette-divider">
+		<div class="row featurette">
+		  <div class="col-md-7">
+			<h2 class="featurette-heading">Detailed cultural information. <span class="text-muted">Sites, artworks, and artists.</span></h2>
+			<p class="lead">Beyond the map, browse the huge collection of cultural heritage resources available. 
+			LOD4Culture allows you to find relevant data of sites, artworks, and artists. 
+			A lot of information to grasp: images, descriptions, locations, figures, architects, collection lists... and easily browsable.</p>
+		  </div>
+		  <div class="col-md-5">
+		  	<a title="Rokeby Venus" href="app/index.html?type=Artwork&uri=http://www.wikidata.org/entity/Q275349">
+			  <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="app/images/snapshot3.png" focusable="false" role="img" >
+			</a>
+		  </div>
+		</div>
+		<hr class="featurette-divider">
+		<div id="linkedforest" class="row featurette">
+		  <div class="col-md-7 order-md-2">
+			<h2 class="featurette-heading">Based on Linked Open Data. <span class="text-muted">Checkmate.</span></h2>
+			<p class="lead">LOD4Culture consumes Linked Open Data from our nice data providers, 
+			<a href="https://www.wikidata.org">Wikidata</a> and <a href="https://www.dbpedia.org">DBpedia</a>.
+			Accessing Linked Open Data is not easy; we tame the beast by using <a href="https://crafts.gsic.uva.es/">CRAFTS</a>.</p>
+		  </div>
+		  <div class="col-md-5 order-md-1">
+		  	<a title="Frida Kahlo" href="app/index.html?type=Artist&uri=http://www.wikidata.org/entity/Q5588">			
+			  <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="app/images/snapshot4.png" focusable="false" role="img" >
+			</a>
+		  </div>
+		</div>
+		<hr class="featurette-divider">
+		<!-- /END THE FEATURETTES -->
+		<!-- Four columns of text -->
+		<div class="row">
+		  <div class="col-lg-4">
+			<img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://upload.wikimedia.org/wikipedia/commons/6/66/Wikidata-logo-en.svg" focusable="false" role="img" style="background-color:#C5CAE9;" >
+			<h2>Wikidata</h2>
+			<p>Wikidata is a collaboratively edited multilingual knowledge graph. 
+			It is a common source of open data that Wikimedia projects such as <a href="https://en.wikipedia.org/wiki/Wikipedia">Wikipedia</a> 
+			and anyone else can use under the CC0 public domain license. 
+			Wikidata has very rich cultural heritage data and is the main source employed in LOD4Culture.</p>
+			<p><a class="btn btn-secondary" href="https://www.wikidata.org" role="button">More information &raquo;</a></p>
+		  </div><!-- /.col-lg-3 -->
+		  <div class="col-lg-4">
+			<img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://upload.wikimedia.org/wikipedia/commons/7/73/DBpediaLogo.svg" focusable="false" role="img" style="background-color:#C5CAE9;" >
+			<h2>DBpedia</h2>
+			<p>DBpedia is a project aiming to extract structured content from the information created in <a href="https://en.wikipedia.org/wiki/Wikipedia">Wikipedia</a>. 
+			This structured information is made available to anyone who wants to query it. 
+			DBpedia is a secondary source of LOD4Culture, employed to extract textual descriptions and Wikipedia categories of cultural heritage resources.</p>
+			<p><a class="btn btn-secondary" href="https://www.dbpedia.org" role="button">More information &raquo;</a></p>
+		  </div><!-- /.col-lg-3 -->
+		  <div class="col-lg-4">
+			<img class="bd-placeholder-img rounded-circle" width="140" height="140" src="app/images/crafts.svg" focusable="false" role="img" style="background-color:#C5CAE9;" >
+			<h2>CRAFTS</h2>
+			<p>Accessing Linked Open Data is not an easy task. LOD4Culture uses <a href="https://crafts.gsic.uva.es/">CRAFTS</a> 
+			to simplify access to culture data from Wikidata and DBpedia. We have configured a CRAFTS API that automatically 
+			handles the translation of API calls into queries over Linked Open Data. CRAFTS and LOD4Culture are original creations by 
+			<a href="https://www.gsic.uva.es/members/guiveg">Guillermo Vega-Gorgojo</a>.</p>
+			<p><a class="btn btn-secondary" href="https://crafts.gsic.uva.es/" role="button">More information &raquo;</a></p>
+		  </div><!-- /.col-lg-3 -->
+		</div><!-- /.row -->
+		<br>
+		<br>
+	  </div><!-- /.container -->
+	  <!-- FOOTER -->
+	  <footer class="container">
+		<p class="float-right"><a href="#">Back to top</a></p>
+		<p>&copy; 2022 <a href="https://www.gsic.uva.es/members/guiveg">Guillermo Vega-Gorgojo</a></p>
+	  </footer>
+	  
+	  <!-- Hide whatsapp button if not mobile or tablet -->   
+	  <script>
+		if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+			$("#guasaps").addClass("d-none");
+	  </script>
+  </body>
+</html>

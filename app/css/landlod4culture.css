@@ -1,0 +1,85 @@
+.container {
+  max-width: 960px;
+}
+
+.cabecera {
+  background-color: #C5CAE9;
+}
+
+.movil-rotado {
+  position: absolute;
+  top: -31%;
+  right: auto;
+  bottom: 0;
+  left: -5%;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+}
+
+.portatil-rotado {
+  position: absolute;
+  right: -20%;
+  bottom: -5%;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+}
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+.marketing {
+  padding-top: 2rem;
+}
+.marketing .col-lg-3 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+.marketing .col-lg-3 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+
+/* Featurettes
+------------------------- */
+
+.featurette-divider {
+  margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -.05rem;
+}
+
+
+/*
+ * Extra utilities
+ */
+
+.flex-equal > * {
+  -ms-flex: 1;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    -ms-flex: 1;
+    flex: 1;
+  }
+}
+@media (min-width: 40em) {
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 2rem;
+  }
+}
+
+.overflow-hidden { overflow: hidden; }
