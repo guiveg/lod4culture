@@ -36,7 +36,7 @@ LOD4Culture is available under an Apache 2.0 license. Please send us an email to
 if you use or plan to use LOD4Culture. Drop us also a message if you have comments or suggestions for improvement.
 
 **If you have already employed LOD4Culture you can help ups to improve by filling [this questionnaire](https://docs.google.com/forms/d/e/1FAIpQLSegclfrxDUysX32lDYajA4uYlCol1RuIgHXhpae-jWK2ocrmQ/viewform?usp=sf_link) 
-(also available [in Spanish](https://docs.google.com/forms/d/e/1FAIpQLScSoceY0kEaKCoN5xjofzLGpwT6fswV9H-E1S_X5jxv1nF9CQ/viewform?usp=sf_link))**
+(also available [in Spanish](https://docs.google.com/forms/d/e/1FAIpQLScSoceY0kEaKCoN5xjofzLGpwT6fswV9H-E1S_X5jxv1nF9CQ/viewform?usp=sf_link)).**
 
 
 Screenshots
