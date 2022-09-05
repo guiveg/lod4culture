@@ -26,7 +26,7 @@ const config = {
 		id: 'mapbox/streets-v11',
 		tileSize: 512,
 		zoomOffset: -1,
-		accessToken: 'pk.eyJ1IjoiZ3VpbGxldmVnYSIsImEiOiJjazE2bW1la2QwZDdrM2pvMjExN21zdHZ1In0.NUl8tlLgN8aZgTwASoH3lA'
+		accessToken: 'YOUR_TOKEN'
 	},
 	geolocstart: [40.24, -4.24], // localización de la península Ibérica según DBpedia-es
 	
@@ -47,8 +47,8 @@ const config = {
 
 	// CRAFTS
 	craftsConfig: {
-		api: 'https://crafts.gsic.uva.es/apis/chsites', //'http://192.168.86.99:8888/apis/chsites-test', //
-		auth: 'Bearer a53f0d88-c8a6-4dfb-aa77-1a204826fece', //'Bearer ac38c4be-e30e-484e-b6cf-8ae435ec3c44', // 
+		api: 'YOUR_CRAFTS_API',
+		auth: 'YOUR_CRAFTS_API_READ_TOKEN',
 		queryCountSitesBox: '/query?id=countSitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#type}}&type={{{type}}}{{/type}}',
 		querySitesBox: '/query?id=sitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#limit}}&limit={{limit}}{{/limit}}{{#offset}}&offset={{offset}}{{/offset}}{{#type}}&type={{{type}}}{{/type}}',
 		queryMostPopularLoc: '/query?id=mostPopularLocationInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}',
@@ -59,7 +59,7 @@ const config = {
 	
 	// SOLR	
 	solrConfig: {
-		path: 'https://lod4culture.gsic.uva.es/chsites', // 'http://localhost:8983/solr/chsites', // '/chsites',
+		path: 'YOUR_SOLR_SERVER',
 		suggestHandler: '/suggest',
 		suggester: {
 			es: "mySuggesterES",
@@ -101,11 +101,6 @@ const config = {
 	hidemax: 8,
 	hidebegin: 5,
 	
-	// colores iconos
-	//ciconborder: '#1A237E', // indigo 900
-	//ciconback: '#3F51B5', // indigo 500
-	//cicontext: '#C5CAE9', // indigo 100
-
 	// lang
 	nolang: "nolang",
 		
