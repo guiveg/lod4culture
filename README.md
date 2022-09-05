@@ -1,7 +1,7 @@
 LOD4Culture: World-wide Cultural Heritage in one click
 ==========
 LOD4Culture is a web application for the exploration of world-wide Cultural Heritage. It uses a sources Linked Open Data 
-from [https://www.wikidata.org](Wikidata) and [https://www.dbpedia.org/](DBpedia). 
+from [Wikidata](https://www.wikidata.org) and [DBpedia](https://www.dbpedia.org/). 
 
 These are some of the features of LOD4Culture:
 
