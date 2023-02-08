@@ -1,5 +1,5 @@
 /*
-   Copyright 2022, Guillermo Vega-Gorgojo
+   Copyright 2022-2023, Guillermo Vega-Gorgojo
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ async function inicializar() {
 	Sesion.idTimeoutActualizar = null; // id del timeout para actualización automática (para que no se bloquee)
 	
 	// datos de la vista
-	//Sesion.cambioZoom = false;
 	Sesion.zoom = undefined;
 	Sesion.zoomPrevio = undefined;
 	Sesion.bounds = undefined;
@@ -48,7 +47,10 @@ async function inicializar() {
 	Sesion.cellE = undefined;
 	Sesion.cellW = undefined;
 	Sesion.cellSide = undefined;
-	//Sesion.cellNdecs = undefined;
+
+	// datos num celdas para barra progreso
+	Sesion.numCeldas = undefined;
+	Sesion.progresoCeldas = 0;
 		
 	//datos del filtro de tipo de sitio
 	Sesion.ts = undefined;
@@ -76,19 +78,16 @@ async function inicializar() {
 	// INICIALIZACIÓN DATOS
 	Datos = {};
 	Datos.tiposLugares = {}; // aquí meto la info de los tipos de lugares
-	Datos.numLugaresCeldas = {}; // aquí meto la cuenta del número de lugares por celda
-	Datos.lugaresCeldas = {}; // aquí meto las IRIs de los lugares en cada celda	
-	Datos.popLocCeldas = {}; // aquí meto la localización más popular de cada celda para posicionar los clusters	
+	Datos.celdas = {}; // aquí meto la info de cada celda
+	Datos.popupsArtworks = {}; // aquí meto los artworks a incluir en los popups de los marcadores
 	Datos.lugares = {}; // aquí meto la información de cada sitio del mapa
 	Datos.sites = {}; // aquí meto la información de cada site (independientemente de lo que hay en lugares) 
 	Datos.obras = {}; // aquí meto la información de cada obra
 	Datos.artistas = {}; // aquí meto la información de cada artista	
-	
-	
+		
 	// DETECCIÓN DE ANDROID CHROME
 	//isAndroidChrome = indexOfNormalized(navigator.userAgent, "android") > -1 &&
 	//	window.chrome != null && typeof window.chrome !== "undefined" && window.navigator.vendor === "Google Inc.";
-
 
 	// CARGA INICIAL DE LA URL
 	// 1) carga localización si la hay
@@ -240,33 +239,6 @@ async function inicializar() {
 		// cargo la URL
 		cargarURL();
 	};
-			
-	
-	// CAPTURO EVENTOS popupopen PARA HANDLER PÁGINA SITIO
-	Mimapa.on('popupopen',function(e) {
-		// handler botón más info para ir a la página del sitio
-		$('.moreinfo').click(function() {
-			// guardo botón del click para referenciarlo luego
-			const $boton = $(this);
-		
-			// mando evento GA4	
-			sendEvent('select_content', {
-				content_type: "more_info",
-				item_id: $(this).attr("uri")
-			});
-						
-			// una página de recursos más (siempre será 1 al partir de 0)
-			Sesion.estado.resourcePages++;
-						
-			// reajusto url y creo nueva página en la historia
-			const url = window.location.pathname + '?type=Site&uri=' + $(this).attr("uri");			
-			history.pushState(Sesion.estado, "", url);
-			
-			// cargo la url
-			cargarURL();
-		});
-	});
-		
 		
 	// INICIALIZACIÓN CUESTIONARIO
 	// variables en localStorage
@@ -524,9 +496,21 @@ function mapaMovido() {
 			Sesion.cellS = Math.floor( Sesion.bounds.getSouth() / Sesion.cellSide );
 			Sesion.cellE = Math.floor( Sesion.bounds.getEast() / Sesion.cellSide );
 			Sesion.cellW = Math.floor( Sesion.bounds.getWest() / Sesion.cellSide );
-					
-			/*
-			// TODO: muestro info
+			
+			/* INFO
+			const x = Sesion.bounds.getEast() - Sesion.bounds.getWest();
+			const y = Sesion.bounds.getNorth() - Sesion.bounds.getSouth();
+			const nctx = 1 + Math.floor(x/Sesion.cellSide);
+			const ncty = 1 + Math.floor(y/Sesion.cellSide);			
+			const nct = nctx * ncty;
+			console.log("Zoom " + Sesion.zoom + " - Num celdas teóricas: " + nct);
+			console.log("GRADOS celda z" + Sesion.zoom + ": " + Sesion.cellSide );
+			console.log("GRADOS X: " + x + " - nctx: " + nctx + " - ncx: " + (1 + Sesion.cellE - Sesion.cellW) );
+			console.log("GRADOS Y: " + y + " - ncty: " + ncty + " - ncy: " + (1 + Sesion.cellN - Sesion.cellS) );
+			console.log("Num celdas teor: " + nct);
+			console.log("Num celdas: " + (1 + Sesion.cellE - Sesion.cellW)*(1 + Sesion.cellN - Sesion.cellS) );
+			
+			// INFO
 			console.log("Filtro de tipo de sitio: " + Sesion.ts);
 			console.log("Nivel de zoom: " + Sesion.zoom);
 			console.log("Map bounds - west: " + Sesion.bounds.getWest() + " - east: " + Sesion.bounds.getEast() 
@@ -583,7 +567,7 @@ async function actualizarMapa() {
 	let promesas = [];
 	
 	// incluyo número de celdas en EventData
-	addEventData('num_cells', (Sesion.cellE - Sesion.cellW)*(Sesion.cellN - Sesion.cellS));
+	addEventData('num_cells', Sesion.numCeldas);
 	
 	// trabajo celda a celda
 	for (let x=Sesion.cellW; x<=Sesion.cellE; x++) {
@@ -597,25 +581,41 @@ async function actualizarMapa() {
 				cellY: y,
 				et: 'z' + Sesion.zoom+ '_x' + x + '_y' + y+'_'+Sesion.ts
 			}
-	
-	/* TODO
-	console.warn("N: " + Math.ceil((objcelda.cellY + 1) * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
-	 + " | S: " + Math.floor(objcelda.cellY * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
-	  + " | W: " + Math.floor(objcelda.cellX * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
-	   + " | E: " + Math.ceil((objcelda.cellX + 1) * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor);*/
+				
+			/* INFO
+			console.warn("N: " + Math.ceil((objcelda.cellY + 1) * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
+			 + " | S: " + Math.floor(objcelda.cellY * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
+			  + " | W: " + Math.floor(objcelda.cellX * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor
+			   + " | E: " + Math.ceil((objcelda.cellX + 1) * objcelda.cellSide * Sesion.cellFactor) / Sesion.cellFactor);*/
 			
 			// le enchufo también un render
 			objcelda.render = function() {
+				/* INFO rendering celdas
+				console.log("RENDER CELDA " + objcelda.et);
+				if (Datos.lugaresCeldas[objcelda.et] == undefined && Datos.numLugaresCeldas[objcelda.et] == 0)
+					console.log(" => 0 marcadores");
+				else if (Datos.lugaresCeldas[objcelda.et] == undefined && Datos.numLugaresCeldas[objcelda.et] > 0)
+					console.log(" => cluster " + Datos.numLugaresCeldas[objcelda.et] );
+				else
+					console.log(" => " + Datos.numLugaresCeldas[objcelda.et] + " marcadores");*/					
+					
+				// reajuste de longitud por el antimeridiano
+				// nciclos será un entero menor que 0 para longitudes menores de -180
+				// nciclos será un entero mayor que 0 para longitudes mayores de -180
+				const nciclos = Math.floor((objcelda.cellX*Sesion.cellSide + Sesion.cellSide/2 + 180)/360);
+			
 				// sólo hago el rendering si coincide el zoom y el filtro de type con el de la sesión
 				if (objcelda.zoom === Sesion.zoom && objcelda.type === Sesion.ts) {
+					// actualizo progreso y llamo a pintar la barra de progreso
+					Sesion.progresoCeldas++;
+					pintarBarraProgreso(true);				
+					// el rendering...
 					if (Sesion.celdasPintadas[objcelda.et] == undefined) {
-						// obtengo el número de lugares de la celda
-						const nlc = Datos.numLugaresCeldas[objcelda.et];
-						// obtengo el objeto con los lugares de la celda (puede no existir)
-						const lugares = Datos.lugaresCeldas[objcelda.et];
+						// recupero mi celda
+						const mycell = Datos.celdas[objcelda.et];
 						
 						// LIMPIEZA CASO ZOOM-OUT (si toca cluster borramos los marcadores que aglutina)
-						if (zoomout && lugares == undefined) { // hay que borrar todo!
+						if (zoomout && mycell.lugares == undefined) { // hay que borrar todo!
 							// preparo objeto bounds de la celda
 							const bounds = L.latLngBounds([
 								[objcelda.cellY * Sesion.cellSide, objcelda.cellX * Sesion.cellSide],
@@ -637,21 +637,22 @@ async function actualizarMapa() {
 						}
 						
 						// CLUSTERS: si no hay lugares, pinto un cluster con el número
-						if (lugares == undefined && nlc >0) {							
+						if (mycell.lugares == undefined && mycell.numl > 0) {							
 							// pongo el cluster en el sitio más popular cercano o si no hay en el centro de la celda
-							const mLatLng = Datos.popLocCeldas[objcelda.et] != null ?
-								L.latLng( Datos.popLocCeldas[objcelda.et].lat, Datos.popLocCeldas[objcelda.et].lng ) :
-								L.latLng( objcelda.cellY*Sesion.cellSide + Sesion.cellSide/2, objcelda.cellX*Sesion.cellSide + Sesion.cellSide/2 );							
+							// incluyo longitud con tratamiento de antimeridiano
+							const mLatLng = mycell.popLoc != null ?
+								L.latLng( mycell.popLoc.lat, mycell.popLoc.lng + nciclos*360 ) :
+								L.latLng( objcelda.cellY*Sesion.cellSide + Sesion.cellSide/2, objcelda.cellX*Sesion.cellSide + Sesion.cellSide/2);							
 							// preparo icono
 							const micon = new L.divIcon({
-								html: '<div class="marcadorTexto"><span>' + nlc + '</span></div>',
+								html: '<div class="marcadorTexto"><span>' + mycell.numl + '</span></div>',
 							    className: '',	
 							    iconSize: [48, 48],
 								iconAnchor:   [24, 24], // point of the icon which will correspond to marker's location
 								tooltipAnchor:[12, 0], // point from which tooltips will "open", relative to the icon anchor
 							});
 							// pongo marcador con +3 de zoom al hacer click
-							const cpint = L.marker(mLatLng, { icon: micon, zIndexOffset: Number(nlc) } ) // uso nlc como zindex
+							const cpint = L.marker(mLatLng, { icon: micon, zIndexOffset: Number(mycell.numl) } ) // uso número de lugares como zindex
 								.on('click', function(e) { // añado aquí también handler de click
 									if (Mimapa.getZoom() <= config.zPlace) // sólo si el zoom no es muy grande
 										Mimapa.flyTo(mLatLng, Sesion.zoom + 3); })
@@ -659,12 +660,12 @@ async function actualizarMapa() {
 								.addTo(MarcClusters);							
 							// añado tooltip si no es táctil
 							if (!(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)))								
-								cpint.bindTooltip(nlc + getLiteral(dict.nsites));
+								cpint.bindTooltip(mycell.numl + getLiteral(dict.nsites));
 						} 
-						else if (lugares != undefined) {
+						else if (mycell.lugares != undefined) {
 							// LUGARES: pinto un marcador por cada sitio en la celda
-							for (let i=0; i<lugares.length; i++) {
-								const luri = lugares[i];
+							for (let i=0; i<mycell.lugares.length; i++) {
+								const luri = mycell.lugares[i];
 								
 								// sólo pinto lugar si no estaba libre (para evitar efectos borde entre celdas)
 								if (Sesion.lugaresPintados[luri] == undefined) {
@@ -675,23 +676,10 @@ async function actualizarMapa() {
 									// incluyo este renombramiento para evitar warning: "Cargando contenido visual mixto (no seguro) en una página segura"
 									if (lobj.image != undefined)
 										lobj.image = lobj.image.replace('http://', 'https://');
-									// reajuste de longitud por el antimeridiano
-									// nciclos será un entero menor que 0 para longitudes menores de -180
-									// nciclos será un entero mayor que 0 para longitudes mayores de -180
-									const nciclos = Math.floor((objcelda.cellX*Sesion.cellSide + Sesion.cellSide/2 + 180)/360);
+									// incluyo longitud con tratamiento de antimeridiano
 									lobj.latLng = L.latLng(Datos.lugares[luri].lat, Datos.lugares[luri].lng + nciclos*360);
 									lobj.label = getLiteral(Datos.lugares[luri].label);
 									lobj.desc = firstUppercase(getLiteral(Datos.lugares[luri].desc));
-									/* TODO previo
-									lobj.comment = getLiteral(Datos.lugares[luri].comment);
-									// ajusto comment para que no se pase
-									if (lobj.comment != undefined) {
-										let comm = lobj.comment.substring(0, 140);
-										if (comm.length == 140) {
-											let ind = comm.lastIndexOf(".") > comm.lastIndexOf(" ")? comm.lastIndexOf(".") : comm.lastIndexOf(" ");
-											lobj.comment = comm.substring(0, ind) + "...";
-										}
-									}*/
 									lobj.acronym = getAcronym(lobj.label, 3);
 									// obtengo puntuación y valoración de PRO o no
 									lobj.score = getResourceScore(Datos.lugares[luri]);
@@ -715,18 +703,97 @@ async function actualizarMapa() {
 									
 									// ajusto zindex con la puntuación del marcador (más populares arriba)
 									let mpint = L.marker(lobj.latLng, { icon: micon, zIndexOffset: lobj.score } )										
-										.on('click', function(e) { 
+										.on('click', async function(e) { 
 											// preparo posición para mover mapa al clickar (1 celda más alto para que se vea mejor el marcador)
 											const potencia = Math.pow(2, Mimapa.getZoom() - 4);											
 											const inclat = config.zDegreesStep4/potencia;	
 											const nuevoLatLng = L.latLng( lobj.latLng.lat + inclat, lobj.latLng.lng );
 											Mimapa.flyTo(nuevoLatLng);
+											// detecto si hace falta obtener los artworks
+											if (mpint.artworksPending) {
+												// recupero los artworks y los guardo
+												lobj.artworks = await getArtworksSite(mpint.uri);
+												// indico si hay artworks y si los hay escojo uno al azahar para arrancar el carrusel
+												if (lobj.artworks.length == 0)
+													lobj.noartworks = true;
+												else {
+													lobj.noartworks = false;
+													const ind = Math.floor(Math.random() * lobj.artworks.length);
+													lobj.artworks[ind].active = true;												
+												}												
+												// genero el nuevo html del popup
+												const pophtmlpro = Mustache.render(popupSiteTemplatePRO, lobj);
+												// se lo enchufo
+												this.bindPopup(pophtmlpro);												
+												// quito el flag
+												delete mpint.artworksPending;												
+												// rotación cada 2 segundos
+												$('.carousel').carousel({ 'interval': 2500 });
+												
+												// pongo aquí el handler porque regenero el marcador y no captura bien el evento
+												// handler botón más info para ir a la página del recurso
+												$('.moreinfo').click(function() {		
+													// mando evento GA4	
+													sendEvent('select_content', {
+														content_type: "more_info",
+														item_id: $(this).attr("uri")
+													});			
+													// compruebo si es un sitio o un artwork
+													const type = $(this).hasClass("site")? "Site" : "Artwork";			
+													// una página de recursos más (siempre será 1 al partir de 0)
+													Sesion.estado.resourcePages++;
+													// reajusto url y creo nueva página en la historia
+													const url = window.location.pathname + '?type='+type+'&uri=' + $(this).attr("uri");			
+													history.pushState(Sesion.estado, "", url);
+													// cargo la url
+													cargarURL();
+												});
+											}											
 										}) // añado aquí también handler de click
 										.bindPopup(popuptml)
 										.addTo( MarcLugares );
 									
 									// le añado también la uri (para poder borrarlo en caso de zoom out)
-									mpint.uri = luri;									
+									mpint.uri = luri;
+									// le añado también un flag para que pida los artworks
+									mpint.artworksPending = true;
+
+									// reactivo y paro el carrusel
+									mpint.on('popupopen', function(e) {
+										// Find the popup element
+									  	let popup = this._popup._container;
+									  	// Find the carousel within the popup
+									 	let carousel = popup.querySelector('.carousel');
+									  	// Start the carousel
+									  	$(carousel).carousel('cycle');
+									  	
+									  	// pongo aquí el handler para escuchar los eventos al abrir el popup
+										// handler botón más info para ir a la página del recurso
+										$('.moreinfo').click(function() {		
+											// mando evento GA4	
+											sendEvent('select_content', {
+												content_type: "more_info",
+												item_id: $(this).attr("uri")
+											});			
+											// compruebo si es un sitio o un artwork
+											const type = $(this).hasClass("site")? "Site" : "Artwork";			
+											// una página de recursos más (siempre será 1 al partir de 0)
+											Sesion.estado.resourcePages++;
+											// reajusto url y creo nueva página en la historia
+											const url = window.location.pathname + '?type='+type+'&uri=' + $(this).attr("uri");			
+											history.pushState(Sesion.estado, "", url);
+											// cargo la url
+											cargarURL();
+										});
+									});
+									mpint.on('popupclose', function(e) {
+									  	// Find the popup element
+									  	let popup = this._popup._container;
+									  	// Find the carousel within the popup
+									  	let carousel = popup.querySelector('.carousel');
+									  	// Stop the carousel
+									  	$(carousel).carousel('pause');
+									});
 									
 									// añado tooltip si no es táctil
 									if (!(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)))
@@ -772,6 +839,11 @@ function inicioActualizarMapa() {
 	$("#bot_home").addClass("d-none");
 	$("#bot_spinner").removeClass("d-none");
 	
+	// inicializo num de celdas y pinto la barra de progreso
+	Sesion.numCeldas = (1 + Sesion.cellE - Sesion.cellW)*(1 + Sesion.cellN - Sesion.cellS);	
+	Sesion.progresoCeldas = 0;	
+	pintarBarraProgreso(true);
+	
 	// actualizo la localización del estado de la sesión
 	Sesion.estado.loc.lat = Mimapa.getCenter().lat;
 	Sesion.estado.loc.lng = Mimapa.getCenter().lng;
@@ -814,6 +886,8 @@ function finActualizarMapa() {
 	//console.log(" -> fin de actualización del mapa, quito temporizador antibloqueo");
 	Sesion.actualizandoMapa = false; // quito bloqueo
 	Sesion.mapaIni = false; // ya no estamos en la fase inicial
+	// escondo la barra de progreso
+	pintarBarraProgreso(false);
 	// cancelo timeout anterior (si existiera)
 	if (Sesion.idTimeoutActualizar != null) {
 		clearTimeout(Sesion.idTimeoutActualizar);
@@ -892,4 +966,17 @@ function finActualizarMapa() {
 			});		
 		}
 	}
+}
+function pintarBarraProgreso(mostrar) {
+	if (mostrar) {	
+		// muestro la barra de progreso
+		$("#mibarradiv").removeClass('d-none');		
+		// ajusto progreso
+		const porc = Math.floor((100*Sesion.progresoCeldas)/Sesion.numCeldas);
+		$("#mibarra").attr("style","width: "+porc+"%");
+		$("#mibarra").attr("aria-valuenow", porc);
+		$("#mibarra").html(porc+"%");
+		//console.warn("Progreso: " + Sesion.progresoCeldas + "/" + Sesion.numCeldas + " (" + porc + "%)");
+	} else // escondo la barra
+		$("#mibarradiv").addClass('d-none');
 }
