@@ -1,5 +1,5 @@
 /*
-   Copyright 2022, Guillermo Vega-Gorgojo
+   Copyright 2022-2023, Guillermo Vega-Gorgojo
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,11 +17,10 @@
 // PANEL DE CONTROL
 function cargarPanel() {
 	//  panel de control de info
-	//Info = L.control({'position':'topright'});
 	Info = L.control({'position':'topleft'});
 	Info.onAdd = function (map) {
-		// creo div con clase "card" de bootstrap
-		this._div = L.DomUtil.create('div', 'card ml-1 ml-sm-2 mt-1 mt-sm-2');		
+		// creo div con clases "card" de bootstrap y "mipanel"
+		this._div = L.DomUtil.create('div', 'mipanel card ml-1 ml-sm-2 mt-1 mt-sm-2');		
 		return this._div;
 	};
 	Info.init = function () {
@@ -31,7 +30,7 @@ function cargarPanel() {
 			esmovil: screen.width < 576
 		};
 		const cardhtml = Mustache.render(cardTemplate, obj);
-		$(".card").html(cardhtml);
+		$(".mipanel").html(cardhtml);
 		
 		// HANDLERS
 		// icono casa
