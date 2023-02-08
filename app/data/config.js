@@ -46,8 +46,8 @@ const config = {
 
 	// CRAFTS
 	craftsConfig: {
-		api: 'https://crafts.gsic.uva.es/apis/chsites',
-		auth: 'Bearer a53f0d88-c8a6-4dfb-aa77-1a204826fece',
+		api: 'YOUR_CRAFTS_API',
+		auth: 'Bearer YOUR_CRAFTS_API_READ_TOKEN',
 		queryCountSitesBox: '/query?id=countSitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#type}}&type={{{type}}}{{/type}}',
 		querySitesBox: '/query?id=sitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#limit}}&limit={{limit}}{{/limit}}{{#offset}}&offset={{offset}}{{/offset}}{{#type}}&type={{{type}}}{{/type}}',
 		queryMostPopularLoc: '/query?id=mostPopularLocationInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}',
@@ -59,7 +59,7 @@ const config = {
 	
 	// SOLR	
 	solrConfig: {
-		path: 'https://lod4culture.gsic.uva.es/chsites',
+		path: 'YOUR_SOLR_SERVER',
 		suggestHandler: '/suggest',
 		suggester: {
 			es: "mySuggesterES",
