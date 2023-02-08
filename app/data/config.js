@@ -1,5 +1,5 @@
 /*
-   Copyright 2022, Guillermo Vega-Gorgojo
+   Copyright 2022-2023, Guillermo Vega-Gorgojo
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 
 const config = {
 	title: 'LOD4Culture',
+	version: '1.1',
 
 	// geo widget - Leaflet: http://leafletjs.com/
-	geotemplate: 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+	geotemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 	geooptions: {
-		attribution: '<a href="https://www.gsic.uva.es/members/guiveg">Guillermo Vega Gorgojo</a>',
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | <a href="https://www.gsic.uva.es/members/guiveg">Guillermo Vega Gorgojo</a>',
 		minZoom: 4,
 		maxZoom: 20,
-		id: 'mapbox/streets-v11',
 		tileSize: 512,
 		zoomOffset: -1,
-		accessToken: 'YOUR_TOKEN'
 	},
 	geolocstart: [40.24, -4.24], // localización de la península Ibérica según DBpedia-es
 	
@@ -47,11 +46,12 @@ const config = {
 
 	// CRAFTS
 	craftsConfig: {
-		api: 'YOUR_CRAFTS_API',
-		auth: 'YOUR_CRAFTS_API_READ_TOKEN',
+		api: 'https://crafts.gsic.uva.es/apis/chsites',
+		auth: 'Bearer a53f0d88-c8a6-4dfb-aa77-1a204826fece',
 		queryCountSitesBox: '/query?id=countSitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#type}}&type={{{type}}}{{/type}}',
 		querySitesBox: '/query?id=sitesInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}{{#limit}}&limit={{limit}}{{/limit}}{{#offset}}&offset={{offset}}{{/offset}}{{#type}}&type={{{type}}}{{/type}}',
 		queryMostPopularLoc: '/query?id=mostPopularLocationInbox&lngwest={{lngwest}}&lngeast={{lngeast}}&latnorth={{latnorth}}&latsouth={{latsouth}}',
+		queryMostPopularArtsSite: '/query?id=mostPopularArtworksAtSite&site={{{site}}}&limit=10',
 		resourceTemplate: '/resource?id={{{id}}}&iri={{{iri}}}',
 		resourcesTemplate: '/resources?id={{{id}}}{{#iris}}&iris={{{.}}}{{/iris}}{{#ns}}&ns={{{ns}}}{{/ns}}{{#nspref}}&nspref={{{nspref}}}{{/nspref}}'		
 	},
@@ -59,7 +59,7 @@ const config = {
 	
 	// SOLR	
 	solrConfig: {
-		path: 'YOUR_SOLR_SERVER',
+		path: 'https://lod4culture.gsic.uva.es/chsites',
 		suggestHandler: '/suggest',
 		suggester: {
 			es: "mySuggesterES",
@@ -100,7 +100,7 @@ const config = {
 	// hide elements list
 	hidemax: 8,
 	hidebegin: 5,
-	
+
 	// lang
 	nolang: "nolang",
 		
