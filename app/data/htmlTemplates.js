@@ -1,5 +1,5 @@
 /*
-   Copyright 2022, Guillermo Vega-Gorgojo
+   Copyright 2022-2023, Guillermo Vega-Gorgojo
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -50,6 +50,9 @@ var cardTemplate =
 			</div> \
 		</div> \
 	</div> \
+	<div id="mibarradiv" class="progress mt-1 d-none"> \
+         <div id="mibarra" class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div> \
+    </div> \
 </div>';
 
 
@@ -184,13 +187,58 @@ var iconSiteTemplate =
 
 
 var popupSiteTemplate =	
-	'<div style="max-width: 150px;"> \
-		<h5>{{label}}</h5> \
-		{{#image}}<img src="{{{image}}}?width=150">{{/image}} \
-		{{#desc}}<p class="my-1 my-sm-2 card-text">{{{.}}}</p>{{/desc}} \
-		<button uri="{{{uri}}}" class="moreinfo btn btn-primary {{^desc}}mt-2{{/desc}}" type="button">'+getLiteral(dict.moreinfo)+'</button> \
+	'<div style="max-width: 190px;"> \
+		{{#image}}<img src="{{{image}}}?width=190" class="card-img-top" >{{/image}} \
+		<h5 class="card-title my-1 my-sm-2">{{label}}</h5> \
+		{{#desc}}<p class="card-text mt-0 mb-1 mb-sm-2">{{{.}}}</p>{{/desc}} \
+		<div id="popuploading" class="d-flex align-items-center mt-0 mb-1 mb-sm-2"> \
+			<div class="spinner-border spinner-border-sm mr-2"></div> \
+			<span>'+getLiteral(dict.loadingartworks)+'</span> \
+		</div> \
+		<div style="display: flex; justify-content: center;"> \
+			<button uri="{{{uri}}}" class="moreinfo site btn btn-primary" type="button">'+getLiteral(dict.moreinfo)+'</button> \
+		</div> \
 	</div>';
-	
+var popupSiteTemplatePRO =	
+	'<div style="max-width: 190px;"> \
+		{{#noartworks}} \
+			{{#image}}<img src="{{{image}}}?width=190" class="card-img-top" >{{/image}} \
+		{{/noartworks}}	\
+		{{^noartworks}} \
+			<div id="carouselPopupSite" class="carousel slide" data-ride="carousel"> \
+				<div class="carousel-inner"> \
+					{{#image}} \
+						<div class="carousel-item"> \
+							<img src="{{{image}}}?width=190" class="d-block w-100"> \
+						</div> \
+					{{/image}} \
+					{{#artworks}} \
+						<div class="carousel-item {{#active}}active{{/active}}"> \
+							<img src="{{{image}}}?width=190" class="d-block w-100"> \
+							<div class="carousel-caption"> \
+								<p class="mb-1">{{{caption}}}</p> \
+								<button uri="{{{iri}}}" class="moreinfo btn btn-primary btn-sm" type="button">'+getLiteral(dict.view)+'</button> \
+							</div> \
+						</div> \
+					{{/artworks}} \
+				</div> \
+				<button class="carousel-control-prev" type="button" data-target="#carouselPopupSite" data-slide="prev"> \
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span> \
+					<span class="sr-only">Previous</span> \
+				</button> \
+				<button class="carousel-control-next" type="button" data-target="#carouselPopupSite" data-slide="next"> \
+					<span class="carousel-control-next-icon" aria-hidden="true"></span> \
+					<span class="sr-only">Next</span> \
+				</button>   \
+			</div> \
+		{{/noartworks}}	\
+		<h5 class="card-title my-1 my-sm-2">{{label}}</h5> \
+		{{#desc}}<p class="card-text mt-0 mb-1 mb-sm-2">{{{.}}}</p>{{/desc}} \
+		<div style="display: flex; justify-content: center;"> \
+			<button uri="{{{uri}}}" class="moreinfo site btn btn-primary" type="button">'+getLiteral(dict.moreinfo)+'</button> \
+		</div> \
+	</div>';	
+		
 	
 var spinnerTemplate =
 	'<div class="d-flex flex-row bd-highlight m-5"> \
