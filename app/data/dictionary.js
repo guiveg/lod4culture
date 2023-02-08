@@ -102,12 +102,6 @@ var dict = {
 	
 	
 	// suggestions
-	/*searchplace: { "en": "Search place...",	
-		"es": "Buscar lugar...",	
-		"pt": "Pesquisar lugar..."},
-	noplacesfound: { "en": "No places matched",	
-		"es": "No hay lugares que coincidan",	
-		"pt": "Nenhum lugar encontrado"},*/	
 	searchresource: { "en": "Search site, artwork, artist...",	
 		"es": "Buscar sitio, obra de arte, artista..."},	
 	noresourcesfound: { "en": "No resources matched",	
@@ -117,8 +111,6 @@ var dict = {
 	// syte types
 	typefilter: { "en": "Site type",	
 		"es": "Tipo sitio"},
-	/*typefilterred: { "en": "Filter site type",	
-		"es": "Filtrar tipo sitio"},*/	
 	filtering: { "en": "Filtering",	
 		"es": "Filtrando",
 		"pt": "Filtrando"},
@@ -129,7 +121,10 @@ var dict = {
 	showmore: { "en": "Show more",	
 		"es": "Mostrar más",	
 		"pt": "Mostrar mais"},
-	
+	loadingartworks: { "en": "Loading artworks...",	
+		"es": "Cargando obras de arte..."},
+	view: { "en": "View",	
+		"es": "Ver"},
 	
 	// resource labels
 	basicInfo: { "en": "Basic information",
